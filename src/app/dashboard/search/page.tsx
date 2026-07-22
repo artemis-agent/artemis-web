@@ -72,7 +72,7 @@ export default function SearchPage() {
   }, []);
 
   const displayed = useMemo(() => {
-    let list = [...results];
+    const list = [...results];
     if (sortBy === "recent") {
       list.sort((a, b) => b.postedAgo.localeCompare(a.postedAgo));
     } else if (sortBy === "match") {
