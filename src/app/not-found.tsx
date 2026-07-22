@@ -24,8 +24,8 @@ export default function NotFound() {
             <Button className="text-sm">Search Jobs</Button>
           </Link>
         </div>
-        <p className="text-[11px] text-muted-foreground uppercase tracking-[0.15em]">
-          Job Hunting. Reimagined.
+        <p className="text-[11px] text-muted-foreground font-mono">
+          The job hunting agent
         </p>
       </div>
     </div>

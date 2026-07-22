@@ -9,10 +9,38 @@ import Link from "next/link";
 import { searchJobs as mockSearch, type Job } from "@/lib/mock-data";
 import { searchJobsPublic } from "@/lib/api";
 
-const ATS_PLATFORMS = [
-  "Greenhouse", "Lever", "Ashby", "Workday",
-  "SmartRecruiters", "iCIMS", "Eightfold",
-];
+function ValueProps() {
+  return (
+    <section className="max-w-5xl mx-auto px-6 pb-20">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="rounded-lg border border-border bg-card p-6 space-y-3">
+          <p className="text-[10px] text-muted-foreground uppercase tracking-[0.12em] font-mono font-medium">
+            ALL THE DATA
+          </p>
+          <p className="text-[13px] text-muted-foreground leading-relaxed">
+            7 platforms. 1,000+ companies. Every role, normalized. Updated every 30 minutes. You&apos;re not missing anything.
+          </p>
+        </div>
+        <div className="rounded-lg border border-border bg-card p-6 space-y-3">
+          <p className="text-[10px] text-muted-foreground uppercase tracking-[0.12em] font-mono font-medium">
+            ACTIONABLE INTEL
+          </p>
+          <p className="text-[13px] text-muted-foreground leading-relaxed">
+            Match scores. Salary ranges. Hiring velocity. Visa sponsorship. Know exactly where you stand before you apply.
+          </p>
+        </div>
+        <div className="rounded-lg border border-border bg-card p-6 space-y-3">
+          <p className="text-[10px] text-muted-foreground uppercase tracking-[0.12em] font-mono font-medium">
+            YOUR MOVE
+          </p>
+          <p className="text-[13px] text-muted-foreground leading-relaxed">
+            Target roles. Hunt companies. Save leads. Artemis watches while you sleep.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function LandingPage() {
   const [results, setResults] = useState<Job[]>([]);
@@ -49,52 +77,51 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Nav */}
-      <nav className="bg-background sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto flex items-center justify-between h-16 px-6">
-          <div className="flex items-center gap-2.5">
-            <span className="text-sm font-semibold tracking-[0.2em] uppercase">Artemis</span>
+      <nav className="sticky top-0 z-50 border-b border-border bg-black/85 backdrop-blur-sm">
+        <div className="max-w-5xl mx-auto flex items-center justify-between h-[68px] px-6">
+          <div className="flex items-center gap-2">
+            <span className="text-[15px] font-semibold tracking-[0.04em] font-mono">
+              artemis<span className="text-accent">.agent</span>
+            </span>
           </div>
           <div className="flex items-center gap-3">
             <Link href="/login">
-              <Button variant="ghost" className="text-xs tracking-wide h-9 px-4">Log in</Button>
+              <Button variant="ghost" size="sm">Log in</Button>
             </Link>
             <Link href="/signup">
-              <Button className="text-xs tracking-wide h-9 px-4">Get Started</Button>
+              <Button size="sm">Get Started</Button>
             </Link>
           </div>
         </div>
       </nav>
 
       {/* Hero */}
-      <section className={`px-6 transition-all duration-500 ${hasSearched ? "pt-12 pb-8" : "pt-32 pb-24"}`}>
+      <section className={`px-6 transition-all duration-500 ${hasSearched ? "pt-12 pb-8" : "pt-32 pb-20"}`}
+        style={!hasSearched ? { backgroundImage: "repeating-linear-gradient(0deg,transparent 0px,transparent 3px,rgba(255,255,255,0.03) 3px,rgba(255,255,255,0.03) 4px)" } : undefined}>
         <div className="max-w-2xl mx-auto text-center space-y-8">
           {!hasSearched && (
-            <>
-              <div className="space-y-3">
-                <h1 className="text-4xl md:text-5xl font-semibold tracking-tight leading-[1.1]">
-                  Find better work.
-                </h1>
-                <h1 className="text-4xl md:text-5xl font-semibold tracking-tight leading-[1.1] text-muted-foreground">
-                  Build your future.
-                </h1>
-              </div>
-              <p className="text-muted-foreground text-sm tracking-wide max-w-md mx-auto">
-                Real-time jobs from 1,000+ companies across 7 ATS platforms. Scraped, verified, updated every 30 minutes.
+            <div className="space-y-4">
+              <h1 className="text-4xl md:text-5xl font-bold tracking-tight leading-[1.08]">
+                Every job.<br />
+                <span className="text-muted-foreground">Every company. Your game plan.</span>
+              </h1>
+              <p className="text-muted-foreground text-[15px] max-w-lg mx-auto leading-relaxed">
+                Artemis aggregates every opening from 1,000+ companies, scores them against your profile, and tells you where to strike.
               </p>
-            </>
+            </div>
           )}
           <SearchBar onSearch={handleSearch} showFilters={hasSearched} />
         </div>
       </section>
 
-      {/* Results — only after search */}
+      {/* Results */}
       {hasSearched && (
         <section className="pb-16 px-6">
           <div className="max-w-5xl mx-auto">
-            <p className="text-xs text-muted-foreground mb-6 tracking-wide">
+            <p className="text-xs text-muted-foreground mb-6">
               {results.length} results
             </p>
-            <div className="flex items-start gap-4 overflow-x-auto pb-4 scrollbar-none">
+            <div className="flex items-start gap-3 overflow-x-auto pb-4 scrollbar-none">
               {results.map((job) => (
                 <JobCard key={job.id} {...job} />
               ))}
@@ -103,11 +130,11 @@ export default function LandingPage() {
             {results.length > 0 && (
               <div className="text-center mt-10 space-y-3">
                 <Link href="/signup">
-                  <Button variant="outline" size="lg" className="gap-2 tracking-wide text-sm">
-                    See all results <ArrowRight className="h-4 w-4" />
+                  <Button variant="outline" size="lg" className="gap-2">
+                    See all results <ArrowRight className="h-3.5 w-3.5" />
                   </Button>
                 </Link>
-                <p className="text-xs text-muted-foreground tracking-wide mt-2">
+                <p className="text-xs text-muted-foreground mt-2">
                   Create a free account to unlock full search
                 </p>
               </div>
@@ -122,29 +149,14 @@ export default function LandingPage() {
         </section>
       )}
 
-      {/* Bottom — ATS platforms */}
-      {!hasSearched && (
-        <section className="py-20 px-6">
-          <div className="max-w-3xl mx-auto text-center space-y-10">
-            <p className="text-[10px] text-muted-foreground uppercase tracking-[0.25em] font-medium">
-              Supported ATS platforms
-            </p>
-            <div className="flex items-center justify-center gap-x-8 gap-y-3 flex-wrap">
-              {ATS_PLATFORMS.map((name) => (
-                <span key={name} className="text-xs text-muted-foreground tracking-wide">
-                  {name}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* Before-search sections */}
+      {!hasSearched && <ValueProps />}
 
       {/* Footer */}
       <footer className="border-t border-border py-8 px-6 mt-auto">
-        <div className="max-w-5xl mx-auto flex items-center justify-between text-[11px] text-muted-foreground tracking-wide">
-          <span>© 2025 Artemis</span>
-          <span className="uppercase tracking-[0.15em]">Job Hunting. Reimagined.</span>
+        <div className="max-w-5xl mx-auto flex items-center justify-between text-[11px] text-muted-foreground">
+          <span>artemis.agent</span>
+          <span className="font-mono text-[11px]">The job hunting agent</span>
         </div>
       </footer>
     </div>

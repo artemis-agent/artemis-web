@@ -114,8 +114,8 @@ export default function ForgotPasswordPage() {
             href="/"
             className="flex items-center justify-center gap-2 mb-2"
           >
-            <span className="text-sm font-semibold tracking-[0.2em] uppercase">
-              Artemis
+            <span className="text-[15px] font-semibold tracking-[0.04em] font-mono">
+              artemis<span className="text-accent">.agent</span>
             </span>
           </Link>
 

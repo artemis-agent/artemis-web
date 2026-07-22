@@ -40,7 +40,6 @@ export default function JobPage({
         setLoading(false);
       })
       .catch(() => {
-        // Keep mock fallback if available
         if (!job) setLoading(false);
       });
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,25 +64,20 @@ export default function JobPage({
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Nav */}
-      <nav className="border-b border-border bg-background sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto flex items-center justify-between h-14 px-6">
+      <nav className="border-b border-border bg-black/85 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-5xl mx-auto flex items-center justify-between h-[68px] px-6">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <span className="text-sm font-semibold tracking-[0.2em] uppercase">
-              Artemis
+            <span className="text-[15px] font-semibold tracking-[0.04em] font-mono">
+              artemis<span className="text-accent">.agent</span>
             </span>
           </Link>
           <div className="flex items-center gap-4">
             <div className="flex items-center">
               <Link href="/dashboard/search">
-                <Button variant="ghost" size="sm" className="text-xs">
-                  Search
-                </Button>
+                <Button variant="ghost" size="sm">Search</Button>
               </Link>
               <Link href="/dashboard/saved">
-                <Button variant="ghost" size="sm" className="text-xs">
-                  Saved
-                </Button>
+                <Button variant="ghost" size="sm">Saved</Button>
               </Link>
             </div>
             <UserNav />
@@ -91,15 +85,11 @@ export default function JobPage({
         </div>
       </nav>
 
-      {/* Back link */}
       <div className="max-w-5xl mx-auto px-6 pt-6">
         <button
           onClick={() => {
-            if (window.history.length > 1) {
-              router.back();
-            } else {
-              router.push("/dashboard/search");
-            }
+            if (window.history.length > 1) router.back();
+            else router.push("/dashboard/search");
           }}
           className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
@@ -108,7 +98,6 @@ export default function JobPage({
         </button>
       </div>
 
-      {/* Title */}
       <div className="max-w-5xl mx-auto px-6 pt-6 pb-2">
         <h1 className="text-2xl font-semibold tracking-tight">{job.title}</h1>
         {job.shortSummary && (
@@ -116,10 +105,8 @@ export default function JobPage({
         )}
       </div>
 
-      {/* Two-column layout */}
       <div className="max-w-5xl mx-auto px-6 py-6">
         <div className="flex flex-col md:flex-row gap-12">
-          {/* Left sidebar — meta */}
           <aside className="md:w-[240px] shrink-0 space-y-6">
             <div className="space-y-5">
               <MetaBlock label="Location">
@@ -175,7 +162,7 @@ export default function JobPage({
                 <>
                   <Separator />
                   <MetaBlock label="Visa Sponsorship">
-                    <span className={`text-sm font-medium ${job.visaSponsorship ? "text-green-600" : "text-red-500"}`}>
+                    <span className={`text-sm font-medium ${job.visaSponsorship ? "text-accent" : "text-muted-foreground"}`}>
                       {job.visaSponsorship ? "Available" : "Not Available"}
                     </span>
                   </MetaBlock>
@@ -189,7 +176,6 @@ export default function JobPage({
               </MetaBlock>
             </div>
 
-            {/* Match score */}
             {job.matchScore && (
               <>
                 <Separator />
@@ -207,7 +193,6 @@ export default function JobPage({
               </>
             )}
 
-            {/* Apply button — sticky on mobile */}
             <div className="pt-2">
               <Button
                 className="w-full gap-2 text-sm"
@@ -219,12 +204,10 @@ export default function JobPage({
             </div>
           </aside>
 
-          {/* Right content — description */}
           <main className="flex-1 min-w-0 space-y-8">
-            {/* Company header */}
             <div className="flex items-center gap-3">
               <Avatar className="h-10 w-10">
-                <AvatarFallback className="bg-muted text-foreground text-sm font-medium">
+                <AvatarFallback className="bg-secondary text-foreground text-sm font-medium">
                   {initials}
                 </AvatarFallback>
               </Avatar>
@@ -248,7 +231,6 @@ export default function JobPage({
               </div>
             </div>
 
-            {/* Details grid */}
             <section className="space-y-3">
               <h2 className="text-base font-semibold">Details</h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -282,7 +264,6 @@ export default function JobPage({
 
             <Separator />
 
-            {/* About the Role */}
             <section className="space-y-3">
               <h2 className="text-base font-semibold">About the Role</h2>
               <p className="text-sm text-muted-foreground leading-relaxed">
@@ -290,13 +271,12 @@ export default function JobPage({
               </p>
             </section>
 
-            {/* Skills */}
             {job.skills.length > 0 && (
               <section className="space-y-3">
                 <h2 className="text-base font-semibold">Skills & Requirements</h2>
                 <div className="flex flex-wrap gap-2">
                   {job.skills.map((skill) => (
-                    <Badge key={skill} variant="secondary" className="text-xs">
+                    <Badge key={skill} variant="secondary">
                       {skill}
                     </Badge>
                   ))}
@@ -304,7 +284,6 @@ export default function JobPage({
               </section>
             )}
 
-            {/* About company */}
             {job.aboutCompany && (
               <section className="space-y-3">
                 <h2 className="text-base font-semibold">

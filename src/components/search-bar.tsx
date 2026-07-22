@@ -27,7 +27,7 @@ interface SearchFilters {
 
 export function SearchBar({
   onSearch,
-  placeholder = "Search jobs, skills, or companies...",
+  placeholder = "What role should I hunt for?",
   showFilters = true,
   compact = false,
 }: SearchBarProps) {
@@ -43,20 +43,20 @@ export function SearchBar({
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-3">
+    <div className="w-full max-w-2xl mx-auto space-y-2.5">
       <div className="relative flex items-center">
-        <Search className="absolute left-4 h-4 w-4 text-muted-foreground" />
+        <Search className="absolute left-3 h-3.5 w-3.5 text-muted-foreground" />
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           placeholder={placeholder}
-          className={`pl-11 pr-24 ${compact ? "h-11" : "h-13 text-sm"} border-border bg-background`}
+          className={`pl-9 pr-20 ${compact ? "h-10" : "h-11"} text-[13px]`}
         />
         <Button
           onClick={handleSearch}
           size="sm"
-          className={`absolute right-2 ${compact ? "h-7 px-3 text-xs" : "h-9 px-4 text-xs"} tracking-wide`}
+          className="absolute right-1.5 h-7 px-3 text-[11px]"
         >
           Search
         </Button>
@@ -67,7 +67,7 @@ export function SearchBar({
           <Select
             onValueChange={(v: string | null) => setFilters({ ...filters, source: v ?? "all" })}
           >
-            <SelectTrigger className="w-[140px] h-8 text-xs">
+            <SelectTrigger className="w-[130px] h-7 text-[11px]">
               <SelectValue placeholder="All Sources" />
             </SelectTrigger>
             <SelectContent>
@@ -82,7 +82,7 @@ export function SearchBar({
           <Select
             onValueChange={(v: string | null) => setFilters({ ...filters, dateRange: v ?? "all" })}
           >
-            <SelectTrigger className="w-[130px] h-8 text-xs">
+            <SelectTrigger className="w-[120px] h-7 text-[11px]">
               <SelectValue placeholder="Date Added" />
             </SelectTrigger>
             <SelectContent>
@@ -96,7 +96,7 @@ export function SearchBar({
           <Select
             onValueChange={(v: string | null) => setFilters({ ...filters, location: v ?? "all" })}
           >
-            <SelectTrigger className="w-[130px] h-8 text-xs">
+            <SelectTrigger className="w-[120px] h-7 text-[11px]">
               <SelectValue placeholder="Location" />
             </SelectTrigger>
             <SelectContent>
