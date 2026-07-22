@@ -23,7 +23,7 @@ export function UserNav() {
         render={
           <button className="outline-none">
             <Avatar className="h-7 w-7 cursor-pointer">
-              <AvatarFallback className="bg-muted text-foreground text-[10px] font-medium">
+              <AvatarFallback className="bg-secondary text-foreground text-[10px] font-medium">
                 {initials}
               </AvatarFallback>
             </Avatar>

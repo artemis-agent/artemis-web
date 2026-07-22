@@ -9,7 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { UserNav } from "@/components/user-nav";
-import { ArrowRight, MapPin, Briefcase } from "lucide-react";
+import { ArrowRight, MapPin } from "lucide-react";
 import Link from "next/link";
 import {
   listJobs,
@@ -39,7 +39,6 @@ export default function DashboardPage() {
     if (authLoading) return;
     const userId = user?.id;
 
-    // Load saved jobs, stats, recommendations
     Promise.all([
       getStats().catch(() => null),
       listSavedJobs().catch(() => ({ data: [], total: 0 })),
@@ -50,7 +49,6 @@ export default function DashboardPage() {
       setRecommendations(recsRes?.recommendations ?? []);
     }).finally(() => setLoading(false));
 
-    // Load recently viewed jobs from localStorage
     const recentIds = getRecentViews().slice(0, 4);
     if (recentIds.length > 0) {
       Promise.all(recentIds.map((id) => getJob(id).catch(() => null)))
@@ -65,18 +63,20 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Nav */}
-      <nav className="border-b border-border bg-background sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto flex items-center justify-between h-14 px-6">
+      <nav className="border-b border-border bg-black/85 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-5xl mx-auto flex items-center justify-between h-[68px] px-6">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold tracking-[0.2em] uppercase">Artemis</span>
+            <Link href="/dashboard" className="text-[15px] font-semibold tracking-[0.04em] font-mono">
+              artemis<span className="text-accent">.agent</span>
+            </Link>
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center">
               <Link href="/dashboard/search">
-                <Button variant="ghost" size="sm" className="text-xs">Search</Button>
+                <Button variant="ghost" size="sm">Search</Button>
               </Link>
               <Link href="/dashboard/saved">
-                <Button variant="ghost" size="sm" className="text-xs">Saved</Button>
+                <Button variant="ghost" size="sm">Saved</Button>
               </Link>
             </div>
             <UserNav />
@@ -87,29 +87,27 @@ export default function DashboardPage() {
       <div className="max-w-5xl mx-auto px-6 py-8 space-y-10">
         {/* Onboarding banner */}
         {user && !user.onboarding_completed && (
-          <div className="flex items-center justify-between bg-foreground text-background px-5 py-3 rounded-lg">
+          <div className="flex items-center justify-between bg-foreground text-background px-5 py-3 rounded-sm">
             <div>
               <p className="text-sm font-medium">Complete your profile</p>
               <p className="text-xs opacity-70">Upload your resume or fill in your details — it takes 2 minutes and unlocks better job matches.</p>
             </div>
             <Link href="/onboarding">
-              <Button variant="secondary" size="sm" className="text-xs shrink-0">
+              <Button variant="secondary" size="sm" className="shrink-0">
                 Finish Setup <ArrowRight className="h-3 w-3 ml-1" />
               </Button>
             </Link>
           </div>
         )}
 
-        {/* Welcome + Stats */}
+        {/* Welcome */}
         <section className="space-y-4">
           <div className="text-center space-y-1">
             <h1 className="text-xl font-semibold">
               Welcome{user ? ` ${user.name.split(" ")[0]}` : ""}
             </h1>
-            <p className="text-xs text-muted-foreground tracking-wide">
-              {loading
-                ? "Brewing your dashboard..."
-                : "Your job hunting command center"}
+            <p className="text-xs text-muted-foreground">
+              {loading ? "Brewing your dashboard..." : "Your job hunting command center"}
             </p>
           </div>
         </section>
@@ -118,8 +116,8 @@ export default function DashboardPage() {
         {recommendations.length > 0 ? (
           <section className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Top Picks For You</h2>
-              <Link href="/dashboard/search" className="text-sm font-medium hover:underline inline-flex items-center gap-1">
+              <h2 className="text-base font-semibold">Top Picks For You</h2>
+              <Link href="/dashboard/search" className="text-xs font-medium text-accent hover:underline inline-flex items-center gap-1">
                 See All <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
@@ -127,7 +125,7 @@ export default function DashboardPage() {
               {recommendations.map((rec) => (
                 <Card
                   key={rec.job_id}
-                  className="cursor-pointer transition-all hover:shadow-sm hover:border-foreground/20"
+                  className="cursor-pointer transition-colors duration-150 hover:border-border-hover"
                   onClick={() => router.push(`/dashboard/jobs/${rec.job_id}`)}
                 >
                   <CardContent className="p-4">
@@ -152,7 +150,7 @@ export default function DashboardPage() {
                         {rec.matched_skills && rec.matched_skills.length > 0 && (
                           <div className="flex items-center gap-1 flex-wrap">
                             {rec.matched_skills.slice(0, 5).map((skill) => (
-                              <Badge key={skill} variant="outline" className="text-[10px] px-1.5 py-0">
+                              <Badge key={skill} variant="outline" className="text-[10px]">
                                 {skill}
                               </Badge>
                             ))}
@@ -164,7 +162,7 @@ export default function DashboardPage() {
                           </div>
                         )}
                       </div>
-                      <Badge variant="secondary" className="text-xs shrink-0">
+                      <Badge variant="accent" className="text-xs shrink-0">
                         {Math.round(rec.score * 100)}% match
                       </Badge>
                     </div>
@@ -176,7 +174,7 @@ export default function DashboardPage() {
         ) : !loading ? (
           <section className="text-center py-8 space-y-2">
             <p className="text-sm text-muted-foreground">No recommendations yet</p>
-            <p className="text-xs text-muted-foreground">Upload your resume and we&apos;ll find jobs that actually match your skills — not just ones with &quot;synergy&quot; in the title.</p>
+            <p className="text-xs text-muted-foreground">Upload your resume and we&apos;ll find jobs that actually match your skills.</p>
           </section>
         ) : null}
 
@@ -189,7 +187,7 @@ export default function DashboardPage() {
           />
           <div className="flex items-center justify-center gap-2">
             {["Engineering", "Remote", "Senior", "AI / ML", "Startup"].map((tag) => (
-              <Badge key={tag} variant="secondary" className="cursor-pointer hover:bg-foreground hover:text-background transition-colors px-3 py-1 text-xs">
+              <Badge key={tag} variant="outline" className="cursor-pointer hover:bg-secondary transition-colors px-3 py-1">
                 {tag}
               </Badge>
             ))}
@@ -199,15 +197,15 @@ export default function DashboardPage() {
         {/* Saved Jobs */}
         <section className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Your Saved Jobs</h2>
+            <h2 className="text-base font-semibold">Your Saved Jobs</h2>
             {savedJobs.length > 0 && (
-              <Link href="/dashboard/saved" className="text-sm font-medium hover:underline inline-flex items-center gap-1">
+              <Link href="/dashboard/saved" className="text-xs font-medium text-accent hover:underline inline-flex items-center gap-1">
                 View More <ArrowRight className="h-3 w-3" />
               </Link>
             )}
           </div>
           {savedJobs.length > 0 ? (
-            <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-none">
+            <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none">
               {savedJobs.slice(0, 4).map((job) => (
                 <JobCard key={job.id} {...job} saved />
               ))}
@@ -222,13 +220,13 @@ export default function DashboardPage() {
         {/* Recently Viewed */}
         <section className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">Recently Viewed</h2>
-            <Link href="/dashboard/search" className="text-sm font-medium hover:underline inline-flex items-center gap-1">
+            <h2 className="text-base font-semibold">Recently Viewed</h2>
+            <Link href="/dashboard/search" className="text-xs font-medium text-accent hover:underline inline-flex items-center gap-1">
               Browse All <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
           {recentJobs.length > 0 ? (
-            <div className="flex items-center gap-4 overflow-x-auto pb-2 scrollbar-none">
+            <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none">
               {recentJobs.map((job) => (
                 <JobCard key={job.id} {...job} />
               ))}

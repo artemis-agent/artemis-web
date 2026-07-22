@@ -56,41 +56,41 @@ export function JobCard({
 
   return (
     <Card
-      className="group cursor-pointer transition-all hover:shadow-sm hover:border-foreground/20 w-[280px] shrink-0"
+      className="group cursor-pointer transition-colors duration-150 hover:border-border-hover w-[280px] shrink-0"
       onClick={handleClick}
     >
-      <CardContent className="p-5 space-y-3">
+      <CardContent className="p-4 space-y-2.5">
         <div className="flex items-start justify-between">
-          <Avatar className="h-9 w-9">
-            <AvatarFallback className="bg-muted text-foreground text-xs font-medium">
+          <Avatar className="h-8 w-8">
+            <AvatarFallback className="bg-secondary text-foreground text-[10px] font-medium">
               {initials}
             </AvatarFallback>
           </Avatar>
           {onSave && (
             <Button
               variant="ghost"
-              size="icon"
-              className="h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+              size="icon-xs"
+              className="opacity-0 group-hover:opacity-100 transition-opacity"
               onClick={(e) => {
                 e.stopPropagation();
                 onSave(id);
               }}
             >
               <Bookmark
-                className={`h-4 w-4 ${saved ? "fill-foreground text-foreground" : ""}`}
+                className={`h-3.5 w-3.5 ${saved ? "fill-accent text-accent" : ""}`}
               />
             </Button>
           )}
         </div>
 
-        <div className="space-y-1">
-          <h3 className="font-semibold text-sm leading-tight line-clamp-2">
+        <div className="space-y-0.5">
+          <h3 className="font-semibold text-[13px] leading-tight line-clamp-2">
             {title}
           </h3>
-          <p className="text-muted-foreground text-xs">{companyName}</p>
+          <p className="text-muted-foreground text-[11px]">{companyName}</p>
         </div>
 
-        <div className="flex flex-col gap-1.5 text-xs text-muted-foreground">
+        <div className="flex flex-col gap-1 text-[11px] text-muted-foreground">
           {location && (
             <span className="flex items-center gap-1">
               <MapPin className="h-3 w-3" />
@@ -113,12 +113,12 @@ export function JobCard({
 
         <div className="flex items-center gap-1.5 flex-wrap">
           {employmentType && employmentType !== "Full-time" && (
-            <Badge variant="secondary" className="text-[10px] px-2 py-0.5">
+            <Badge variant="secondary" className="text-[10px]">
               {employmentType}
             </Badge>
           )}
           {source && (
-            <Badge variant="outline" className="text-[10px] px-2 py-0.5">
+            <Badge variant="outline" className="text-[10px]">
               {source}
             </Badge>
           )}

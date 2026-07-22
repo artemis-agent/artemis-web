@@ -232,20 +232,6 @@ export function getCompanyJobs(slug: string, params: { keyword?: string; page?: 
   return apiFetch<PaginatedResponse<ApiJob>>(`/companies/${slug}/jobs?${qs}`);
 }
 
-// ── Users ─────────────────────────────────────────────────────
-
-export function createUser(data: { email: string; name: string; location?: string }) {
-  return apiFetch<ApiUser>("/users", { method: "POST", body: JSON.stringify(data) });
-}
-
-export function getUser(id: string) {
-  return apiFetch<ApiUser>(`/users/${id}`);
-}
-
-export function updateUser(id: string, data: { name?: string; location?: string }) {
-  return apiFetch<ApiUser>(`/users/${id}`, { method: "PUT", body: JSON.stringify(data) });
-}
-
 // ── Resume ────────────────────────────────────────────────────
 
 export async function uploadResume(userId: string, file: File) {
@@ -413,13 +399,6 @@ export interface OnboardingData {
 }
 
 export function completeOnboarding(data: OnboardingData) {
-  return apiFetch<ApiUser>("/auth/onboarding", { method: "POST", body: JSON.stringify(data) });
-}
-
-// updateProfile is an alias for the onboarding endpoint, used from the
-// profile edit page after the user has already onboarded. The backend
-// triggers a fire-and-forget user-embedding refresh on success.
-export function updateProfile(data: OnboardingData) {
   return apiFetch<ApiUser>("/auth/onboarding", { method: "POST", body: JSON.stringify(data) });
 }
 

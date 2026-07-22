@@ -30,18 +30,20 @@ export default function SavedJobsPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="border-b border-border bg-background sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto flex items-center justify-between h-14 px-6">
+      <nav className="border-b border-border bg-black/85 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-5xl mx-auto flex items-center justify-between h-[68px] px-6">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <span className="text-sm font-semibold tracking-[0.2em] uppercase">Artemis</span>
+            <span className="text-[15px] font-semibold tracking-[0.04em] font-mono">
+              artemis<span className="text-accent">.agent</span>
+            </span>
           </Link>
           <div className="flex items-center gap-4">
             <div className="flex items-center">
               <Link href="/dashboard">
-                <Button variant="ghost" size="sm" className="text-xs">Dashboard</Button>
+                <Button variant="ghost" size="sm">Dashboard</Button>
               </Link>
               <Link href="/dashboard/search">
-                <Button variant="ghost" size="sm" className="text-xs">Search</Button>
+                <Button variant="ghost" size="sm">Search</Button>
               </Link>
             </div>
             <UserNav />
@@ -52,7 +54,7 @@ export default function SavedJobsPage() {
       <div className="max-w-5xl mx-auto px-6 py-8 space-y-6">
         <div>
           <h1 className="text-xl font-semibold">Saved Jobs</h1>
-          <p className="text-xs text-muted-foreground mt-1 tracking-wide">
+          <p className="text-xs text-muted-foreground mt-1">
             {loading ? "Loading..." : `${savedJobs.length} jobs saved`}
           </p>
         </div>
@@ -64,7 +66,7 @@ export default function SavedJobsPage() {
               You haven&apos;t saved any jobs. Go browse — your dream role isn&apos;t going to bookmark itself.
             </p>
             <Link href="/dashboard/search">
-              <Button className="text-sm">Browse Jobs</Button>
+              <Button>Browse Jobs</Button>
             </Link>
           </div>
         ) : (

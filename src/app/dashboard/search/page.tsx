@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { SearchBar } from "@/components/search-bar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -28,7 +27,6 @@ import {
   listSavedJobIDs,
   saveJob,
   unsaveJob,
-  type ApiJob,
 } from "@/lib/api";
 
 export default function SearchPage() {
@@ -40,7 +38,6 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(true);
   const [totalResults, setTotalResults] = useState(0);
 
-  // Load initial jobs + saved IDs from API
   useEffect(() => {
     Promise.all([
       listJobs({ per_page: 50 }),
@@ -83,14 +80,11 @@ export default function SearchPage() {
     try {
       await apiHunt(huntCompanyInput);
       setHuntCompanyInput("");
-    } catch {
-      // silently fail, will show toast later
-    }
+    } catch {}
   };
 
   const toggleSave = async (id: string) => {
     const isSaved = savedIds.has(id);
-    // Optimistic update
     setSavedIds((prev) => {
       const next = new Set(prev);
       if (isSaved) next.delete(id);
@@ -101,7 +95,6 @@ export default function SearchPage() {
       if (isSaved) await unsaveJob(id);
       else await saveJob(id);
     } catch {
-      // Revert on failure
       setSavedIds((prev) => {
         const next = new Set(prev);
         if (isSaved) next.add(id);
@@ -113,19 +106,20 @@ export default function SearchPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Nav */}
-      <nav className="border-b border-border bg-background sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto flex items-center justify-between h-14 px-6">
+      <nav className="border-b border-border bg-black/85 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-5xl mx-auto flex items-center justify-between h-[68px] px-6">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <span className="text-sm font-semibold tracking-[0.2em] uppercase">Artemis</span>
+            <span className="text-[15px] font-semibold tracking-[0.04em] font-mono">
+              artemis<span className="text-accent">.agent</span>
+            </span>
           </Link>
           <div className="flex items-center gap-4">
             <div className="flex items-center">
               <Link href="/dashboard">
-                <Button variant="ghost" size="sm" className="text-xs">Dashboard</Button>
+                <Button variant="ghost" size="sm">Dashboard</Button>
               </Link>
               <Link href="/dashboard/saved">
-                <Button variant="ghost" size="sm" className="text-xs">Saved</Button>
+                <Button variant="ghost" size="sm">Saved</Button>
               </Link>
             </div>
             <UserNav />
@@ -134,17 +128,9 @@ export default function SearchPage() {
       </nav>
 
       <div className="max-w-4xl mx-auto px-6 py-8 space-y-6">
-        {/* Search */}
-        <SearchBar
-          onSearch={(q) => handleSearch(q)}
-          placeholder={`Search ${totalResults} jobs across companies...`}
-          compact
-        />
-
-        {/* Filters row */}
         <div className="flex items-center gap-2 flex-wrap">
           <Select>
-            <SelectTrigger className="w-[130px] h-8 text-xs">
+            <SelectTrigger className="w-[130px] h-7 text-[11px]">
               <SelectValue placeholder="Job Type" />
             </SelectTrigger>
             <SelectContent>
@@ -156,7 +142,7 @@ export default function SearchPage() {
             </SelectContent>
           </Select>
           <Select>
-            <SelectTrigger className="w-[130px] h-8 text-xs">
+            <SelectTrigger className="w-[130px] h-7 text-[11px]">
               <SelectValue placeholder="Department" />
             </SelectTrigger>
             <SelectContent>
@@ -168,7 +154,7 @@ export default function SearchPage() {
             </SelectContent>
           </Select>
           <Select>
-            <SelectTrigger className="w-[130px] h-8 text-xs">
+            <SelectTrigger className="w-[130px] h-7 text-[11px]">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
@@ -182,13 +168,12 @@ export default function SearchPage() {
           </span>
         </div>
 
-        {/* Results */}
         <div className="space-y-3">
           {!loading && results.length === 0 && (
             <div className="text-center py-12 space-y-2">
               <p className="text-sm font-medium">No jobs found</p>
               <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                {query ? `Nothing matched "${query}". Try broader terms — even LinkedIn couldn't find this one.` : "The pipeline is empty. Start a scrape or hunt a company to populate jobs."}
+                {query ? `Nothing matched "${query}". Try broader terms.` : "The pipeline is empty. Start a scrape or hunt a company to populate jobs."}
               </p>
             </div>
           )}
@@ -197,13 +182,13 @@ export default function SearchPage() {
             return (
               <Card
                 key={job.id}
-                className="cursor-pointer transition-all hover:shadow-sm hover:border-foreground/20"
+                className="cursor-pointer transition-colors duration-150 hover:border-white/20"
                 onClick={() => router.push(`/dashboard/jobs/${job.id}`)}
               >
                 <CardContent className="p-4">
                   <div className="flex items-start gap-4">
                     <Avatar className="h-9 w-9 shrink-0">
-                      <AvatarFallback className="bg-muted text-foreground text-xs font-medium">
+                      <AvatarFallback className="bg-secondary text-foreground text-xs font-medium">
                         {initials}
                       </AvatarFallback>
                     </Avatar>
@@ -226,7 +211,7 @@ export default function SearchPage() {
                           }}
                         >
                           <Bookmark
-                            className={`h-4 w-4 ${savedIds.has(job.id) ? "fill-foreground text-foreground" : ""}`}
+                            className={`h-4 w-4 ${savedIds.has(job.id) ? "fill-accent text-accent" : ""}`}
                           />
                         </Button>
                       </div>
@@ -238,19 +223,17 @@ export default function SearchPage() {
 
                       <div className="flex items-center gap-1.5 flex-wrap">
                         {job.skills.slice(0, 4).map((skill) => (
-                          <Badge key={skill} variant="secondary" className="text-[10px] px-2 py-0.5">
+                          <Badge key={skill} variant="secondary">
                             {skill}
                           </Badge>
                         ))}
                         {job.employmentType && job.employmentType !== "Full-time" && (
-                          <Badge variant="secondary" className="text-[10px] px-2 py-0.5">
+                          <Badge variant="secondary">
                             {job.employmentType}
                           </Badge>
                         )}
                         {job.source && (
-                          <Badge variant="outline" className="text-[10px] px-2 py-0.5">
-                            {job.source}
-                          </Badge>
+                          <Badge variant="outline">{job.source}</Badge>
                         )}
                       </div>
 
@@ -268,11 +251,10 @@ export default function SearchPage() {
           })}
         </div>
 
-        {/* Hunt a company */}
         <Card className="border-dashed">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <Rocket className="h-5 w-5 text-foreground shrink-0" />
+              <Rocket className="h-5 w-5 text-accent shrink-0" />
               <div className="flex-1">
                 <p className="text-sm font-medium">Can&apos;t find a company?</p>
                 <p className="text-xs text-muted-foreground">We&apos;ll hunt it down and scrape their jobs for you.</p>

@@ -448,7 +448,9 @@ function Shell({ title, subtitle, children }: { title: string; subtitle: string;
     <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-lg space-y-6">
         <div className="text-center space-y-2">
-          <span className="text-sm font-semibold tracking-[0.2em] uppercase">Artemis</span>
+          <span className="text-[15px] font-semibold tracking-[0.04em] font-mono">
+            artemis<span className="text-accent">.agent</span>
+          </span>
           <h1 className="text-xl font-semibold mt-4">{title}</h1>
           <p className="text-xs text-muted-foreground tracking-wide">{subtitle}</p>
         </div>

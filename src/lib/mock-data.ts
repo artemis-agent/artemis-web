@@ -227,16 +227,6 @@ export const MOCK_JOBS: Job[] = [
   },
 ];
 
-export const COMPANIES = [
-  "Cloudflare", "Anthropic", "Stripe", "Linear", "Ramp",
-  "Figma", "Brex", "Notion", "Deel", "Grafana Labs",
-  "OpenAI", "Cohere", "CoreWeave", "Snowflake", "Netflix",
-];
-
-export function getJobsByCompany(slug: string): Job[] {
-  return MOCK_JOBS.filter((j) => j.companySlug === slug);
-}
-
 export function getJobById(id: string): Job | undefined {
   return MOCK_JOBS.find((j) => j.id === id);
 }
@@ -250,11 +240,6 @@ export function searchJobs(query: string): Job[] {
       j.skills.some((s) => s.toLowerCase().includes(q)) ||
       j.department.toLowerCase().includes(q)
   );
-}
-
-export function getTopPicks(): Job[] {
-  return MOCK_JOBS.filter((j) => j.matchScore && j.matchScore >= 80)
-    .sort((a, b) => (b.matchScore ?? 0) - (a.matchScore ?? 0));
 }
 
 export function getLandingJobs(): Job[] {

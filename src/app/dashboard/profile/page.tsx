@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  updateProfile,
+  completeOnboarding,
   uploadResume,
   updatePreferences,
   setSecurityQuestion,
@@ -156,7 +156,7 @@ export default function ProfilePage() {
     setSaved(false);
     setError("");
     try {
-      await updateProfile({
+      await completeOnboarding({
         headline,
         summary,
         seniority_level: seniority,
@@ -234,22 +234,22 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="border-b border-border bg-background sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto flex items-center justify-between h-14 px-6">
+      <nav className="border-b border-border bg-black/85 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-5xl mx-auto flex items-center justify-between h-[68px] px-6">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <span className="text-sm font-semibold tracking-[0.2em] uppercase">
-              Artemis
+            <span className="text-[15px] font-semibold tracking-[0.04em] font-mono">
+              artemis<span className="text-accent">.agent</span>
             </span>
           </Link>
           <div className="flex items-center gap-4">
             <div className="flex items-center">
               <Link href="/dashboard/search">
-                <Button variant="ghost" size="sm" className="text-xs">
+                <Button variant="ghost" size="sm">
                   Search
                 </Button>
               </Link>
               <Link href="/dashboard/saved">
-                <Button variant="ghost" size="sm" className="text-xs">
+                <Button variant="ghost" size="sm">
                   Saved
                 </Button>
               </Link>

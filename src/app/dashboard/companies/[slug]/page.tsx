@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { UserNav } from "@/components/user-nav";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, MapPin, Building2, Globe, Bookmark } from "lucide-react";
+import { ArrowLeft, MapPin, Building2, Bookmark } from "lucide-react";
 import {
   getCompany,
   getCompanyJobs,
@@ -82,7 +82,7 @@ export default function CompanyPage({
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center space-y-2">
           <p className="text-sm font-medium">Company not found</p>
-          <p className="text-xs text-muted-foreground">This company doesn&apos;t exist in our system. Try the hunt feature — we love a good chase.</p>
+          <p className="text-xs text-muted-foreground">This company doesn&apos;t exist in our system.</p>
         </div>
       </div>
     );
@@ -97,25 +97,20 @@ export default function CompanyPage({
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Nav */}
-      <nav className="border-b border-border bg-background sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto flex items-center justify-between h-14 px-6">
+      <nav className="border-b border-border bg-black/85 backdrop-blur-sm sticky top-0 z-50">
+        <div className="max-w-5xl mx-auto flex items-center justify-between h-[68px] px-6">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <span className="text-sm font-semibold tracking-[0.2em] uppercase">
-              Artemis
+            <span className="text-[15px] font-semibold tracking-[0.04em] font-mono">
+              artemis<span className="text-accent">.agent</span>
             </span>
           </Link>
           <div className="flex items-center gap-4">
             <div className="flex items-center">
               <Link href="/dashboard/search">
-                <Button variant="ghost" size="sm" className="text-xs">
-                  Search
-                </Button>
+                <Button variant="ghost" size="sm">Search</Button>
               </Link>
               <Link href="/dashboard/saved">
-                <Button variant="ghost" size="sm" className="text-xs">
-                  Saved
-                </Button>
+                <Button variant="ghost" size="sm">Saved</Button>
               </Link>
             </div>
             <UserNav />
@@ -123,7 +118,6 @@ export default function CompanyPage({
         </div>
       </nav>
 
-      {/* Back */}
       <div className="max-w-5xl mx-auto px-6 pt-6">
         <Link
           href="/dashboard/search"
@@ -134,11 +128,10 @@ export default function CompanyPage({
         </Link>
       </div>
 
-      {/* Company header */}
       <div className="max-w-5xl mx-auto px-6 py-8">
         <div className="flex items-start gap-4">
           <Avatar className="h-14 w-14">
-            <AvatarFallback className="bg-muted text-foreground text-lg font-medium">
+            <AvatarFallback className="bg-secondary text-foreground text-lg font-medium">
               {initials}
             </AvatarFallback>
           </Avatar>
@@ -199,7 +192,6 @@ export default function CompanyPage({
 
       <Separator />
 
-      {/* Jobs list */}
       <div className="max-w-5xl mx-auto px-6 py-8 space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-semibold">
@@ -211,7 +203,7 @@ export default function CompanyPage({
           <div className="text-center py-12 space-y-2">
             <p className="text-sm font-medium">No open positions</p>
             <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-              Either they&apos;re fully staffed or our scraper hasn&apos;t caught up yet. We&apos;ll keep watching.
+              Either they&apos;re fully staffed or our scraper hasn&apos;t caught up yet.
             </p>
           </div>
         ) : (
@@ -219,7 +211,7 @@ export default function CompanyPage({
             {jobs.map((job) => (
               <Card
                 key={job.id}
-                className="cursor-pointer transition-all hover:shadow-sm hover:border-foreground/20"
+                className="cursor-pointer transition-colors duration-150 hover:border-white/20"
                 onClick={() => router.push(`/dashboard/jobs/${job.id}`)}
               >
                 <CardContent className="p-4">
@@ -234,18 +226,12 @@ export default function CompanyPage({
                           </span>
                         )}
                         {job.employmentType && job.employmentType !== "Full-time" && (
-                          <Badge
-                            variant="secondary"
-                            className="text-[10px] px-2 py-0.5"
-                          >
+                          <Badge variant="secondary">
                             {job.employmentType}
                           </Badge>
                         )}
                         {job.department && (
-                          <Badge
-                            variant="secondary"
-                            className="text-[10px] px-2 py-0.5"
-                          >
+                          <Badge variant="secondary">
                             {job.department}
                           </Badge>
                         )}
@@ -262,7 +248,7 @@ export default function CompanyPage({
                       }}
                     >
                       <Bookmark
-                        className={`h-4 w-4 ${savedIds.has(job.id) ? "fill-foreground text-foreground" : ""}`}
+                        className={`h-4 w-4 ${savedIds.has(job.id) ? "fill-accent text-accent" : ""}`}
                       />
                     </Button>
                   </div>
