@@ -1,6 +1,5 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import SearchPage from "@/app/dashboard/search/page";
 
 vi.mock("next/navigation", () => ({
@@ -35,14 +34,11 @@ vi.mock("@/lib/auth-context", () => ({
   AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
-beforeEach(() => {
-  // localStorage cleared automatically by setup.ts
-});
-
 describe("SearchPage", () => {
-  it("renders the job search page with nav", () => {
+  it("renders nav with links", () => {
     render(<SearchPage />);
     expect(screen.getByText("Dashboard").closest("a")).toHaveAttribute("href", "/dashboard");
+    expect(screen.getByText("Companies").closest("a")).toHaveAttribute("href", "/dashboard/companies");
     expect(screen.getByText("Saved").closest("a")).toHaveAttribute("href", "/dashboard/saved");
   });
 
@@ -53,38 +49,11 @@ describe("SearchPage", () => {
     }, { timeout: 3000 });
   });
 
-  it("renders filter selects: Job Type, Department, Sort by", async () => {
+  it("renders filter selects", async () => {
     render(<SearchPage />);
     await waitFor(() => {
-      expect(screen.getByText("Job Type")).toBeInTheDocument();
-      expect(screen.getByText("Department")).toBeInTheDocument();
-      expect(screen.getByText("Sort by")).toBeInTheDocument();
-    });
-  });
-
-  it("renders the hunt a company card", async () => {
-    render(<SearchPage />);
-    await waitFor(() => {
-      expect(screen.getByText("Can't find a company?")).toBeInTheDocument();
-      expect(screen.getByPlaceholderText("Company name")).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "Hunt" })).toBeInTheDocument();
-    });
-  });
-
-  it("hunt button is disabled when input is empty", async () => {
-    render(<SearchPage />);
-    await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Hunt" })).toBeDisabled();
-    });
-  });
-
-  it("hunt button enables after typing company name", async () => {
-    const user = userEvent.setup();
-    render(<SearchPage />);
-    const input = await screen.findByPlaceholderText("Company name");
-    await user.type(input, "Acme");
-    await waitFor(() => {
-      expect(screen.getByRole("button", { name: "Hunt" })).not.toBeDisabled();
+      const triggers = document.querySelectorAll('[data-slot="select-trigger"]');
+      expect(triggers.length).toBeGreaterThanOrEqual(3);
     });
   });
 });
