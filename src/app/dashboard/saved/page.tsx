@@ -45,6 +45,9 @@ export default function SavedJobsPage() {
               <Link href="/dashboard/search">
                 <Button variant="ghost" size="sm">Search</Button>
               </Link>
+              <Link href="/dashboard/companies">
+                <Button variant="ghost" size="sm">Companies</Button>
+              </Link>
             </div>
             <UserNav />
           </div>

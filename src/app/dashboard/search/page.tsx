@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { UserNav } from "@/components/user-nav";
 import { Progress } from "@/components/ui/progress";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -16,13 +15,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MapPin, Bookmark, Rocket } from "lucide-react";
+import { MapPin, Bookmark } from "lucide-react";
 import Link from "next/link";
 import { type Job } from "@/lib/mock-data";
 import {
   listJobs,
   searchJobs as apiSearch,
-  huntCompany as apiHunt,
   apiJobToDisplay,
   listSavedJobIDs,
   saveJob,
@@ -34,37 +32,23 @@ export default function SearchPage() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Job[]>([]);
   const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
-  const [huntCompanyInput, setHuntCompanyInput] = useState("");
   const [loading, setLoading] = useState(true);
   const [totalResults, setTotalResults] = useState(0);
+  const [jobType, setJobType] = useState("all");
+  const [department, setDepartment] = useState("all");
+  const [sortBy, setSortBy] = useState("relevance");
 
-  useEffect(() => {
-    Promise.all([
-      listJobs({ per_page: 50 }),
-      listSavedJobIDs().catch(() => ({ ids: [] })),
-    ]).then(([jobsRes, savedRes]) => {
-      setResults((jobsRes?.data ?? []).map(apiJobToDisplay));
-      setTotalResults(jobsRes?.total ?? 0);
-      setSavedIds(new Set(savedRes?.ids ?? []));
-    }).catch(() => {}).finally(() => setLoading(false));
-  }, []);
-
-  const handleSearch = useCallback(async (q: string) => {
-    setQuery(q);
-    if (!q.trim()) {
-      try {
-        const res = await listJobs({ per_page: 50 });
-        setResults((res?.data ?? []).map(apiJobToDisplay));
-        setTotalResults(res?.total ?? 0);
-      } catch {
-        setResults([]);
-        setTotalResults(0);
-      }
-      return;
-    }
+  const fetchJobs = useCallback(async (q: string) => {
     setLoading(true);
+    const params = { limit: 50, department: department === "all" ? undefined : department, employment_type: jobType === "all" ? undefined : jobType };
+
     try {
-      const res = await apiSearch({ q, limit: 50 });
+      let res;
+      if (!q.trim()) {
+        res = await listJobs({ per_page: 50, ...params });
+      } else {
+        res = await apiSearch({ q, ...params });
+      }
       setResults((res?.data ?? []).map(apiJobToDisplay));
       setTotalResults(res?.total ?? 0);
     } catch {
@@ -73,15 +57,36 @@ export default function SearchPage() {
     } finally {
       setLoading(false);
     }
+  }, [department, jobType]);
+
+  useEffect(() => {
+    Promise.all([
+      listJobs({ per_page: 50, employment_type: jobType === "all" ? undefined : jobType, department: department === "all" ? undefined : department }),
+      listSavedJobIDs().catch(() => ({ ids: [] })),
+    ]).then(([jobsRes, savedRes]) => {
+      setResults((jobsRes?.data ?? []).map(apiJobToDisplay));
+      setTotalResults(jobsRes?.total ?? 0);
+      setSavedIds(new Set(savedRes?.ids ?? []));
+    }).catch(() => {}).finally(() => setLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleHunt = async () => {
-    if (!huntCompanyInput.trim()) return;
-    try {
-      await apiHunt(huntCompanyInput);
-      setHuntCompanyInput("");
-    } catch {}
-  };
+  const displayed = useMemo(() => {
+    const list = [...results];
+    if (sortBy === "recent") {
+      list.sort((a, b) => b.postedAgo.localeCompare(a.postedAgo));
+    } else if (sortBy === "match") {
+      list.sort((a, b) => (b.matchScore ?? 0) - (a.matchScore ?? 0));
+    }
+    return list;
+  }, [results, sortBy]);
+
+  const handleSearch = useCallback(async (q: string) => {
+    setQuery(q);
+    await fetchJobs(q);
+  }, [fetchJobs]);
+
+  useEffect(() => { fetchJobs(query); }, [jobType, department]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const toggleSave = async (id: string) => {
     const isSaved = savedIds.has(id);
@@ -118,6 +123,9 @@ export default function SearchPage() {
               <Link href="/dashboard">
                 <Button variant="ghost" size="sm">Dashboard</Button>
               </Link>
+              <Link href="/dashboard/companies">
+                <Button variant="ghost" size="sm">Companies</Button>
+              </Link>
               <Link href="/dashboard/saved">
                 <Button variant="ghost" size="sm">Saved</Button>
               </Link>
@@ -129,7 +137,7 @@ export default function SearchPage() {
 
       <div className="max-w-4xl mx-auto px-6 py-8 space-y-6">
         <div className="flex items-center gap-2 flex-wrap">
-          <Select>
+          <Select value={jobType} onValueChange={(v) => setJobType(v ?? "all")}>
             <SelectTrigger className="w-[130px] h-7 text-[11px]">
               <SelectValue placeholder="Job Type" />
             </SelectTrigger>
@@ -141,19 +149,21 @@ export default function SearchPage() {
               <SelectItem value="internship">Internship</SelectItem>
             </SelectContent>
           </Select>
-          <Select>
+          <Select value={department} onValueChange={(v) => setDepartment(v ?? "all")}>
             <SelectTrigger className="w-[130px] h-7 text-[11px]">
               <SelectValue placeholder="Department" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Depts</SelectItem>
-              <SelectItem value="engineering">Engineering</SelectItem>
-              <SelectItem value="product">Product</SelectItem>
-              <SelectItem value="design">Design</SelectItem>
-              <SelectItem value="sales">Sales</SelectItem>
+              <SelectItem value="Engineering">Engineering</SelectItem>
+              <SelectItem value="Product">Product</SelectItem>
+              <SelectItem value="Design">Design</SelectItem>
+              <SelectItem value="Sales">Sales</SelectItem>
+              <SelectItem value="Marketing">Marketing</SelectItem>
+              <SelectItem value="Data">Data</SelectItem>
             </SelectContent>
           </Select>
-          <Select>
+          <Select value={sortBy} onValueChange={(v) => setSortBy(v ?? "relevance")}>
             <SelectTrigger className="w-[130px] h-7 text-[11px]">
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
@@ -164,20 +174,20 @@ export default function SearchPage() {
             </SelectContent>
           </Select>
           <span className="text-xs text-muted-foreground ml-auto">
-            {loading ? "Searching..." : `${results.length} results`}
+            {loading ? "Searching..." : `${displayed.length} of ${totalResults} results`}
           </span>
         </div>
 
         <div className="space-y-3">
-          {!loading && results.length === 0 && (
+          {!loading && displayed.length === 0 && (
             <div className="text-center py-12 space-y-2">
               <p className="text-sm font-medium">No jobs found</p>
               <p className="text-xs text-muted-foreground max-w-sm mx-auto">
-                {query ? `Nothing matched "${query}". Try broader terms.` : "The pipeline is empty. Start a scrape or hunt a company to populate jobs."}
+                {query ? `Nothing matched "${query}". Try broader terms.` : "The pipeline is empty."}
               </p>
             </div>
           )}
-          {results.map((job) => {
+          {displayed.map((job) => {
             const initials = job.companyName.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
             return (
               <Card
@@ -250,30 +260,6 @@ export default function SearchPage() {
             );
           })}
         </div>
-
-        <Card className="border-dashed">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <Rocket className="h-5 w-5 text-accent shrink-0" />
-              <div className="flex-1">
-                <p className="text-sm font-medium">Can&apos;t find a company?</p>
-                <p className="text-xs text-muted-foreground">We&apos;ll hunt it down and scrape their jobs for you.</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <Input
-                  placeholder="Company name"
-                  className="h-9 w-[160px] text-sm"
-                  value={huntCompanyInput}
-                  onChange={(e) => setHuntCompanyInput(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleHunt()}
-                />
-                <Button size="sm" disabled={!huntCompanyInput} onClick={handleHunt}>
-                  Hunt
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

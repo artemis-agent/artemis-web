@@ -162,6 +162,7 @@ export interface ListJobsParams {
   location?: string;
   seniority?: string;
   employment_type?: string;
+  department?: string;
   page?: number;
   per_page?: number;
 }
@@ -173,6 +174,7 @@ export function listJobs(params: ListJobsParams = {}) {
   if (params.location) qs.set("location", params.location);
   if (params.seniority) qs.set("seniority", params.seniority);
   if (params.employment_type) qs.set("employment_type", params.employment_type);
+  if (params.department) qs.set("department", params.department);
   if (params.page) qs.set("page", String(params.page));
   if (params.per_page) qs.set("per_page", String(params.per_page));
   return apiFetch<PaginatedResponse<ApiJob>>(`/jobs?${qs}`);
@@ -183,6 +185,8 @@ export interface SearchJobsParams {
   company?: string;
   location?: string;
   seniority?: string;
+  employment_type?: string;
+  department?: string;
   limit?: number;
 }
 
@@ -191,6 +195,8 @@ export function searchJobs(params: SearchJobsParams) {
   if (params.company) qs.set("company", params.company);
   if (params.location) qs.set("location", params.location);
   if (params.seniority) qs.set("seniority", params.seniority);
+  if (params.employment_type) qs.set("employment_type", params.employment_type);
+  if (params.department) qs.set("department", params.department);
   if (params.limit) qs.set("limit", String(params.limit));
   return apiFetch<{ data: ApiJob[]; total: number; query: string }>(`/jobs/search?${qs}`);
 }
