@@ -75,6 +75,9 @@ export default function DashboardPage() {
               <Link href="/dashboard/search">
                 <Button variant="ghost" size="sm">Search</Button>
               </Link>
+              <Link href="/dashboard/companies">
+                <Button variant="ghost" size="sm">Companies</Button>
+              </Link>
               <Link href="/dashboard/saved">
                 <Button variant="ghost" size="sm">Saved</Button>
               </Link>

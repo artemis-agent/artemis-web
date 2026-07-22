@@ -109,6 +109,9 @@ export default function CompanyPage({
               <Link href="/dashboard/search">
                 <Button variant="ghost" size="sm">Search</Button>
               </Link>
+              <Link href="/dashboard/companies">
+                <Button variant="ghost" size="sm">Companies</Button>
+              </Link>
               <Link href="/dashboard/saved">
                 <Button variant="ghost" size="sm">Saved</Button>
               </Link>
@@ -120,7 +123,7 @@ export default function CompanyPage({
 
       <div className="max-w-5xl mx-auto px-6 pt-6">
         <Link
-          href="/dashboard/search"
+          href="/dashboard/companies"
           className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="h-3.5 w-3.5" />
@@ -160,6 +163,10 @@ export default function CompanyPage({
               {company.job_count !== undefined && (
                 <span>{company.job_count} jobs</span>
               )}
+              {company.funding_stage && (
+                <span>{company.funding_stage.replace("series_", "Series ").replace(/\b\w/g, (c) => c.toUpperCase())}</span>
+              )}
+              {company.is_public && <span>Public</span>}
             </div>
             {company.description && (
               <p className="text-xs text-muted-foreground max-w-lg">
@@ -168,6 +175,16 @@ export default function CompanyPage({
             )}
             {company.careers_url && (
               <div className="flex items-center gap-3">
+                {company.website && (
+                  <a
+                    href={company.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-muted-foreground hover:text-foreground transition-colors underline"
+                  >
+                    Website →
+                  </a>
+                )}
                 <a
                   href={company.careers_url}
                   target="_blank"

@@ -248,6 +248,11 @@ export default function ProfilePage() {
                   Search
                 </Button>
               </Link>
+              <Link href="/dashboard/companies">
+                <Button variant="ghost" size="sm">
+                  Companies
+                </Button>
+              </Link>
               <Link href="/dashboard/saved">
                 <Button variant="ghost" size="sm">
                   Saved
