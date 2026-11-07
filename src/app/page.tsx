@@ -77,7 +77,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Nav */}
-      <nav className="sticky top-0 z-50 border-b border-border bg-black/85 backdrop-blur-sm">
+      <nav className="sticky top-0 z-50 border-b border-border bg-nav/85 backdrop-blur-sm">
         <div className="max-w-5xl mx-auto flex items-center justify-between h-[68px] px-6">
           <div className="flex items-center gap-2">
             <span className="text-[15px] font-semibold tracking-[0.04em] font-mono">
@@ -97,7 +97,7 @@ export default function LandingPage() {
 
       {/* Hero */}
       <section className={`px-6 transition-all duration-500 ${hasSearched ? "pt-12 pb-8" : "pt-32 pb-20"}`}
-        style={!hasSearched ? { backgroundImage: "repeating-linear-gradient(0deg,transparent 0px,transparent 3px,rgba(255,255,255,0.03) 3px,rgba(255,255,255,0.03) 4px)" } : undefined}>
+        style={!hasSearched ? { backgroundImage: "repeating-linear-gradient(0deg,transparent 0px,transparent 3px,var(--scanline) 3px,var(--scanline) 4px)" } : undefined}>
         <div className="max-w-2xl mx-auto text-center space-y-8">
           {!hasSearched && (
             <div className="space-y-4">

@@ -19,8 +19,8 @@ export function MockProvider({ children }: { children: ReactNode }) {
   if (!enabled) return children;
 
   return ready ? children : (
-    <div className="min-h-screen bg-[#141416] flex items-center justify-center">
-      <p className="text-sm text-[#8f8f8f] font-mono">Starting mock server...</p>
+    <div className="min-h-screen bg-background flex items-center justify-center">
+      <p className="text-sm text-muted-foreground font-mono">Starting mock server...</p>
     </div>
   );
 }

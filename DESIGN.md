@@ -1,10 +1,10 @@
 # artemis.agent Design System
 
-Dark-first editorial design language for the Artemis AI job hunting agent. Inspired by Vercel Geist typography and getdesign.md's precision aesthetic.
+Editorial design language (light by default, with a matching dark theme) for the Artemis AI job hunting agent. Inspired by Vercel Geist typography and getdesign.md's precision aesthetic.
 
 ## Brand Identity
 - **Name**: `artemis.agent` — lowercase, monospace, dot-separated agent branding
-- **Mood**: AI agent that works for you — proactive, precise, dark
+- **Mood**: AI agent that works for you — proactive, precise
 - **Tagline**: "The job hunting agent"
 - **Voice**: Artemis doesn't browse. It hunts. It matches. It delivers. You just show up.
 
@@ -15,19 +15,25 @@ Dark-first editorial design language for the Artemis AI job hunting agent. Inspi
 - **Scale**: Very compact — `text-[10px]` badges, `text-[13px]` body, `text-xl` section heads, `text-5xl` hero
 
 ## Color Palette
-| Token | Color | Usage |
-|-------|-------|-------|
-| `--background` | `#141416` | Page background |
-| `--card` | `#0d0d0d` | Card/surface backgrounds |
-| `--foreground` | `#ededed` | Primary text |
-| `--muted-foreground` | `#8f8f8f` | Secondary text, labels |
-| `--primary` | `#fafafa` | Primary button bg |
-| `--primary-foreground` | `#141416` | Primary button text |
-| `--secondary` | `rgba(255,255,255,0.08)` | Secondary bg |
-| `--accent` | `#ffb1ee` | Links, badges, focus rings |
-| `--border` | `rgba(255,255,255,0.10)` | All borders |
-| `--input` | `rgba(255,255,255,0.12)` | Input borders |
-| `--ring` | `#ffb1ee` | Focus ring |
+All colours are CSS custom properties in `src/app/globals.css`. `:root` holds the light theme (the default); the `.dark` class on an ancestor (e.g. `<html class="dark">`) switches to the dark theme. Components use tokens only; never hardcode `white`/`black` or hex values.
+
+| Token | Light | Dark | Usage |
+|-------|-------|------|-------|
+| `--background` | `#fafafa` | `#141416` | Page background |
+| `--card` | `#ffffff` | `#0d0d0d` | Card/surface backgrounds |
+| `--foreground` | `#161618` | `#ededed` | Primary text |
+| `--muted-foreground` | `#6b6b70` | `#8f8f8f` | Secondary text, labels |
+| `--primary` | `#141416` | `#fafafa` | Primary button bg |
+| `--primary-foreground` | `#fafafa` | `#141416` | Primary button text |
+| `--secondary` | `rgba(0,0,0,0.05)` | `rgba(255,255,255,0.08)` | Secondary bg |
+| `--accent` | `#c0168f` | `#ffb1ee` | Links, badges, focus rings |
+| `--border` | `rgba(0,0,0,0.10)` | `rgba(255,255,255,0.10)` | All borders |
+| `--input` | `rgba(0,0,0,0.14)` | `rgba(255,255,255,0.12)` | Input borders |
+| `--ring` | `#c0168f` | `#ffb1ee` | Focus ring |
+| `--nav` | `#ffffff` | `#000000` | Sticky nav, used as `bg-nav/85` |
+| `--overlay` | `#000000` | `#ffffff` | Hover tints: `hover:bg-overlay/5`, `hover:border-overlay/20` |
+| `--card-shadow`, `--popover-shadow` | soft drop | deep drop + inset | `shadow-(--card-shadow)` |
+| `--scanline` | `rgba(0,0,0,0.035)` | `rgba(255,255,255,0.03)` | Landing hero texture |
 
 ## Components
 
@@ -40,8 +46,8 @@ Dark-first editorial design language for the Artemis AI job hunting agent. Inspi
 
 ### Cards
 - `rounded-lg`, `border border-border`
-- `bg-card` with inset shadow: `shadow-[0_1px_2px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.05)]`
-- Hover: `hover:border-white/20`
+- `bg-card` with `shadow-(--card-shadow)`
+- Hover: `hover:border-overlay/20`
 - Size variants: default, sm
 
 ### Badges
@@ -57,12 +63,12 @@ Dark-first editorial design language for the Artemis AI job hunting agent. Inspi
 
 ### Header/Nav
 - Height: `h-[68px]`
-- `bg-black/85 backdrop-blur-sm`
+- `bg-nav/85 backdrop-blur-sm`
 - `border-b border-border`
 - Logo: Mono font, `tracking-[0.12em]`, pink accent on middle letters
 
 ### Data Display
-- Hover rows: `hover:bg-white/[0.04]`
+- Hover rows: `hover:bg-overlay/[0.04]`
 - Separators: `border-t border-border`
 - Small uppercase labels: `text-[11px] uppercase tracking-wider text-muted-foreground`
 

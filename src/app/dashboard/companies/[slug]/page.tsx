@@ -97,7 +97,7 @@ export default function CompanyPage({
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="border-b border-border bg-black/85 backdrop-blur-sm sticky top-0 z-50">
+      <nav className="border-b border-border bg-nav/85 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-5xl mx-auto flex items-center justify-between h-[68px] px-6">
           <Link href="/dashboard" className="flex items-center gap-2">
             <span className="text-[15px] font-semibold tracking-[0.04em] font-mono">
@@ -228,7 +228,7 @@ export default function CompanyPage({
             {jobs.map((job) => (
               <Card
                 key={job.id}
-                className="cursor-pointer transition-colors duration-150 hover:border-white/20"
+                className="cursor-pointer transition-colors duration-150 hover:border-overlay/20"
                 onClick={() => router.push(`/dashboard/jobs/${job.id}`)}
               >
                 <CardContent className="p-4">

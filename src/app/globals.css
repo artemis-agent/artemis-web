@@ -6,6 +6,8 @@
 
 @theme inline {
   --color-background: var(--background);
+  --color-nav: var(--nav);
+  --color-overlay: var(--overlay);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
@@ -48,44 +50,53 @@
 }
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  --background: #141416;
-  --foreground: #ededed;
-  --card: #0d0d0d;
-  --card-foreground: #ededed;
-  --popover: #1a1a1d;
-  --popover-foreground: #ededed;
-  --primary: #fafafa;
-  --primary-foreground: #141416;
-  --secondary: rgba(255, 255, 255, 0.08);
-  --secondary-foreground: #ededed;
-  --muted: rgba(255, 255, 255, 0.04);
-  --muted-foreground: #8f8f8f;
-  --accent: #ffb1ee;
-  --accent-foreground: #141416;
+  --background: #fafafa;
+  --foreground: #161618;
+  --card: #ffffff;
+  --card-foreground: #161618;
+  --popover: #ffffff;
+  --popover-foreground: #161618;
+  --primary: #141416;
+  --primary-foreground: #fafafa;
+  --secondary: rgba(0, 0, 0, 0.05);
+  --secondary-foreground: #161618;
+  --muted: rgba(0, 0, 0, 0.03);
+  --muted-foreground: #6b6b70;
+  --accent: #c0168f;
+  --accent-foreground: #ffffff;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: rgba(255, 255, 255, 0.10);
-  --border-hover: rgba(255, 255, 255, 0.18);
-  --input: rgba(255, 255, 255, 0.12);
-  --ring: #ffb1ee;
-  --chart-1: #ffb1ee;
-  --chart-2: #f5a623;
-  --chart-3: #a0a0a0;
-  --chart-4: #5a5a5a;
-  --chart-5: #333333;
+  --border: rgba(0, 0, 0, 0.10);
+  --border-hover: rgba(0, 0, 0, 0.18);
+  --input: rgba(0, 0, 0, 0.14);
+  --ring: #c0168f;
+  --chart-1: #c0168f;
+  --chart-2: #d97706;
+  --chart-3: #737373;
+  --chart-4: #a3a3a3;
+  --chart-5: #d4d4d4;
   --radius: 0.25rem;
-  --sidebar: #0d0d0d;
-  --sidebar-foreground: #ededed;
-  --sidebar-primary: #fafafa;
-  --sidebar-primary-foreground: #141416;
-  --sidebar-accent: rgba(255, 255, 255, 0.08);
-  --sidebar-accent-foreground: #ededed;
-  --sidebar-border: rgba(255, 255, 255, 0.10);
-  --sidebar-ring: #ffb1ee;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #161618;
+  --sidebar-primary: #141416;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-accent: rgba(0, 0, 0, 0.05);
+  --sidebar-accent-foreground: #161618;
+  --sidebar-border: rgba(0, 0, 0, 0.10);
+  --sidebar-ring: #c0168f;
+
+  /* Theme-aware stand-ins for colours that used to be hardcoded in components. */
+  --nav: #ffffff; /* used as bg-nav/85 */
+  --overlay: #000000; /* hover tints: bg-overlay/5, border-overlay/20 */
+  --scanline: rgba(0, 0, 0, 0.035);
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 1px 1px rgba(0, 0, 0, 0.03);
+  --popover-shadow: 0 12px 32px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 .dark {
+  color-scheme: dark;
+
   --background: #141416;
   --foreground: #ededed;
   --card: #0d0d0d;
@@ -118,6 +129,12 @@
   --sidebar-accent-foreground: #ededed;
   --sidebar-border: rgba(255, 255, 255, 0.10);
   --sidebar-ring: #ffb1ee;
+
+  --nav: #000000;
+  --overlay: #ffffff;
+  --scanline: rgba(255, 255, 255, 0.03);
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --popover-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 @layer base {

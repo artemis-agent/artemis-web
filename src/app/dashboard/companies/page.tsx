@@ -74,7 +74,7 @@ export default function CompaniesPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="border-b border-border bg-black/85 backdrop-blur-sm sticky top-0 z-50">
+      <nav className="border-b border-border bg-nav/85 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-5xl mx-auto flex items-center justify-between h-[68px] px-6">
           <Link href="/dashboard" className="flex items-center gap-2">
             <span className="text-[15px] font-semibold tracking-[0.04em] font-mono">
@@ -185,7 +185,7 @@ export default function CompaniesPage() {
                 {filtered.map((c) => (
                   <tr
                     key={c.id}
-                    className="border-b border-border hover:bg-white/[0.04] cursor-pointer transition-colors"
+                    className="border-b border-border hover:bg-overlay/[0.04] cursor-pointer transition-colors"
                     onClick={() => router.push(`/dashboard/companies/${c.slug}`)}
                   >
                     <td className="py-2.5 px-4 font-semibold text-[13px]">{c.name}</td>
